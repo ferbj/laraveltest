@@ -21,27 +21,25 @@ class EmployeesController extends Controller
 
     public function home(){
         try {
-
-                $data = [];
-            if(auth()->check()){
-            $employees = Employee::get();
-                if(empty($employees)){
+            $data = [];
+                if(auth()->check()){
+                $employees = Employee::get();
+                    if(empty($employees)){
                     return [];
-                }else{
-                //employees with salary less than 60 k. Type A
-                $employeeTypeA = EmployeeService::getEmployeesTypeA($employees);
-                //employees with salary less than 80 k. and less than 100k.  Type B
-                $employeeTypeB = EmployeeService::getEmployeesTypeB($employees);
-                //employees with salary less than 80 k. and less than 100k.  Type C
-                $employeeTypeC = EmployeeService::getEmployeesTypeC($employees);
-                $data = ['typeA'=> $employeeTypeA,'typeB'=>$employeeTypeB,'typeC'=>$employeeTypeC];
-
-            }
+                    }else{
+                    //employees with salary less than 60 k. Type A
+                    $employeeTypeA = EmployeeService::getEmployeesTypeA($employees);
+                    //employees with salary less than 80 k. and less than 100k.  Type B
+                    $employeeTypeB = EmployeeService::getEmployeesTypeB($employees);
+                    //employees with salary less than 80 k. and less than 100k.  Type C
+                    $employeeTypeC = EmployeeService::getEmployeesTypeC($employees);
+                    $data = ['typeA'=> $employeeTypeA,'typeB'=>$employeeTypeB,'typeC'=>$employeeTypeC];
+                }
             return view('home')->with('data',$data);
             }
 
         } catch (Exception $e) {
-
+            return response()->json(['error' => $e->getMessage()]);
         }
 
     }
